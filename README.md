@@ -26,14 +26,15 @@ python3 -m http.server 8000
 
 ## Déploiement (GitHub Pages)
 
-Le workflow `.github/workflows/deploy.yml` publie automatiquement le site à chaque
-push sur `main`.
+Le déploiement est **entièrement automatique** : à chaque push sur `main`, le
+workflow `.github/workflows/deploy.yml` synchronise `main` vers la branche
+`gh-pages`, qui est la source configurée de GitHub Pages.
 
-**Activation (une seule fois)** : dans le dépôt GitHub → *Settings* → *Pages* →
-*Build and deployment* → *Source* : **GitHub Actions**.
+```bash
+git push   # c'est tout — le site est en ligne ~1 minute plus tard
+```
 
-Le site sera disponible sur :
-`https://aymanlaassel.github.io/hyperionpatrimoine/`
+Site en ligne : https://aymanlaassel.github.io/hyperionpatrimoine/
 
 ## À personnaliser avant mise en production
 

@@ -20,6 +20,31 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
+  // --- Header réactif au défilement ---------------------------------------
+  const header = document.querySelector(".header");
+  if (header) {
+    const onScroll = () =>
+      header.classList.toggle("is-scrolled", window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  // --- Bouton retour en haut ------------------------------------------------
+  const topBtn = document.createElement("button");
+  topBtn.className = "scroll-top";
+  topBtn.setAttribute("aria-label", "Revenir en haut de page");
+  topBtn.innerHTML =
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+  document.body.appendChild(topBtn);
+  topBtn.addEventListener("click", () =>
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  );
+  window.addEventListener(
+    "scroll",
+    () => topBtn.classList.toggle("is-visible", window.scrollY > 600),
+    { passive: true }
+  );
+
   // --- Lien actif dans la navigation -------------------------------------
   const page = location.pathname.split("/").pop() || "index.html";
   document.querySelectorAll(".nav__links a").forEach((a) => {
@@ -108,6 +133,85 @@ document.addEventListener("DOMContentLoaded", () => {
       status.textContent =
         "Votre client mail va s'ouvrir. Vous pouvez aussi nous appeler directement.";
     });
+  }
+
+  // --- Simulateur d'épargne --------------------------------------------------
+  const simSection = document.querySelector("#simulateur");
+  if (simSection) {
+    const inputs = {
+      initial: document.querySelector("#sim-initial"),
+      monthly: document.querySelector("#sim-monthly"),
+      years: document.querySelector("#sim-years"),
+      rate: document.querySelector("#sim-rate"),
+    };
+    const outputs = {
+      initial: document.querySelector("#sim-initial-out"),
+      monthly: document.querySelector("#sim-monthly-out"),
+      years: document.querySelector("#sim-years-out"),
+      rate: document.querySelector("#sim-rate-out"),
+    };
+    const chart = document.querySelector("#sim-chart");
+    const investedEl = document.querySelector("#sim-invested");
+    const gainsEl = document.querySelector("#sim-gains");
+    const totalEl = document.querySelector("#sim-total");
+
+    const euros = new Intl.NumberFormat("fr-FR", {
+      style: "currency",
+      currency: "EUR",
+      maximumFractionDigits: 0,
+    });
+
+    // Valeur acquise année par année, capitalisation mensuelle.
+    const projection = (initial, monthly, years, annualRate) => {
+      const r = annualRate / 100 / 12;
+      const points = [];
+      let value = initial;
+      let invested = initial;
+      for (let y = 1; y <= years; y++) {
+        for (let m = 0; m < 12; m++) {
+          value = value * (1 + r) + monthly;
+          invested += monthly;
+        }
+        points.push({ year: y, value, invested });
+      }
+      return points;
+    };
+
+    const render = () => {
+      const initial = Number(inputs.initial.value);
+      const monthly = Number(inputs.monthly.value);
+      const years = Number(inputs.years.value);
+      const rate = Number(inputs.rate.value);
+
+      outputs.initial.textContent = euros.format(initial);
+      outputs.monthly.textContent = euros.format(monthly);
+      outputs.years.textContent = `${years} an${years > 1 ? "s" : ""}`;
+      outputs.rate.textContent = `${String(rate).replace(".", ",")} %`;
+
+      const points = projection(initial, monthly, years, rate);
+      const last = points[points.length - 1];
+      investedEl.textContent = euros.format(last.invested);
+      gainsEl.textContent = euros.format(Math.max(0, last.value - last.invested));
+      totalEl.textContent = euros.format(last.value);
+
+      const max = last.value || 1;
+      chart.innerHTML = "";
+      points.forEach((p) => {
+        const bar = document.createElement("div");
+        bar.className = "sim__bar";
+        bar.style.height = `${Math.max(2, (p.value / max) * 100)}%`;
+        const fill = document.createElement("i");
+        fill.style.height = `${Math.min(100, (p.invested / p.value) * 100)}%`;
+        bar.appendChild(fill);
+        bar.title = `Année ${p.year} : ${euros.format(p.value)}`;
+        chart.appendChild(bar);
+      });
+    };
+
+    Object.values(inputs).forEach((input) =>
+      input.addEventListener("input", render)
+    );
+    render();
   }
 
   // --- Année courante dans le pied de page ---------------------------------

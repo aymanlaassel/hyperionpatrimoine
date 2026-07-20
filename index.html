@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hyperion Patrimoine — Cabinet de gestion de patrimoine</title>
   <meta name="description" content="Hyperion Patrimoine accompagne particuliers et dirigeants dans la construction, l'optimisation et la transmission de leur patrimoine. Bilan patrimonial, immobilier, assurance-vie, retraite, fiscalité." />
+  <link rel="canonical" href="https://aymanlaassel.github.io/hyperionpatrimoine/" />
+  <meta name="theme-color" content="#0e1b36" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Hyperion Patrimoine" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:title" content="Hyperion Patrimoine — Cabinet de gestion de patrimoine" />
+  <meta property="og:description" content="Cabinet indépendant de gestion de patrimoine : bilan patrimonial, immobilier, assurance-vie, retraite, fiscalité, transmission." />
+  <meta property="og:url" content="https://aymanlaassel.github.io/hyperionpatrimoine/" />
+  <meta name="twitter:card" content="summary" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -256,8 +265,73 @@
       </div>
     </section>
 
+    <!-- ================= SIMULATEUR ================= -->
+    <section class="section" id="simulateur">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Simulateur d'épargne</span>
+          <h2>Projetez la croissance de votre capital</h2>
+          <p>Ajustez les curseurs pour visualiser, année après année, le capital que des versements réguliers pourraient constituer.</p>
+        </div>
+        <div class="sim reveal">
+          <div class="sim__controls">
+            <div class="sim__field">
+              <div class="sim__field-head">
+                <label for="sim-initial">Versement initial</label>
+                <output id="sim-initial-out">10 000 €</output>
+              </div>
+              <input type="range" id="sim-initial" min="0" max="100000" step="1000" value="10000" />
+            </div>
+            <div class="sim__field">
+              <div class="sim__field-head">
+                <label for="sim-monthly">Versement mensuel</label>
+                <output id="sim-monthly-out">300 €</output>
+              </div>
+              <input type="range" id="sim-monthly" min="0" max="2000" step="50" value="300" />
+            </div>
+            <div class="sim__field">
+              <div class="sim__field-head">
+                <label for="sim-years">Durée</label>
+                <output id="sim-years-out">15 ans</output>
+              </div>
+              <input type="range" id="sim-years" min="1" max="40" step="1" value="15" />
+            </div>
+            <div class="sim__field">
+              <div class="sim__field-head">
+                <label for="sim-rate">Rendement annuel estimé</label>
+                <output id="sim-rate-out">4 %</output>
+              </div>
+              <input type="range" id="sim-rate" min="0.5" max="8" step="0.5" value="4" />
+            </div>
+            <a class="btn btn--gold sim__cta" href="contact.html">Affiner avec un conseiller</a>
+          </div>
+          <div class="sim__results">
+            <div class="sim__chart" id="sim-chart" aria-hidden="true"></div>
+            <div class="sim__totals">
+              <div class="sim__total">
+                <span class="sim__total-label"><i class="sim__dot sim__dot--navy"></i>Capital versé</span>
+                <span class="sim__total-value" id="sim-invested">—</span>
+              </div>
+              <div class="sim__total">
+                <span class="sim__total-label"><i class="sim__dot sim__dot--gold"></i>Intérêts cumulés</span>
+                <span class="sim__total-value" id="sim-gains">—</span>
+              </div>
+              <div class="sim__total sim__total--main">
+                <span class="sim__total-label">Capital estimé au terme</span>
+                <span class="sim__total-value" id="sim-total">—</span>
+              </div>
+            </div>
+            <p class="sim__disclaimer">
+              Simulation purement indicative, à rendement constant, hors fiscalité, frais et inflation.
+              Elle ne constitue pas un conseil en investissement&nbsp;: tout investissement comporte un risque de perte en capital.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ================= CTA ================= -->
-    <section class="section">
+    <section class="section section--tinted">
       <div class="container">
         <div class="cta reveal">
           <div>
