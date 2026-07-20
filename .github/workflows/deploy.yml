@@ -1,6 +1,7 @@
 name: Deploy to GitHub Pages
 
-# Publie le site en synchronisant main -> gh-pages (source Pages : branche gh-pages).
+# Construit le site (Vite) puis publie dist/ sur la branche gh-pages
+# (source configurée de GitHub Pages).
 on:
   push:
     branches: [main]
@@ -18,8 +19,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Sync main to gh-pages
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git push origin HEAD:gh-pages --force
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Publish dist to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          force_orphan: true
