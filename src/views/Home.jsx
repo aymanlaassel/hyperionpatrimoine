@@ -5,10 +5,14 @@ const ASSETS = import.meta.env.BASE_URL + "assets/";
 // Photo si le fichier existe dans public/assets/, sinon fallback CSS élégant.
 function Photo({ file, className }) {
   const [loaded, setLoaded] = useState(false);
+  const url = `${ASSETS}${file}`;
   return (
-    <div className={`${className}${loaded ? " has-photo" : ""}`}>
+    <div
+      className={`${className}${loaded ? " has-photo" : ""}`}
+      style={loaded ? { background: `url(${url}) center/cover no-repeat` } : undefined}
+    >
       <img
-        src={`${ASSETS}${file}`}
+        src={url}
         alt=""
         style={{ display: "none" }}
         onLoad={() => setLoaded(true)}

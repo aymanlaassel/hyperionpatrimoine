@@ -11,7 +11,7 @@ export default function NotFound() {
             Le lien que vous avez suivi est peut-être obsolète, ou l'adresse a été mal saisie.
           </p>
           <div className="cta" style={{ justifyContent: "center" }}>
-            <a className="btn" href="/hyperionpatrimoine/">Retour à l'accueil</a>
+            <a className="btn" href={import.meta.env.BASE_URL}>Retour à l'accueil</a>
           </div>
         </div>
       </section>
