@@ -1,21 +1,18 @@
-# Hyperion Patrimoine
+# Hyperion Patrimoine — Horizon 1
 
-Site vitrine du cabinet de gestion de patrimoine **Hyperion Patrimoine**.
-Construit avec **React + Vite** (multi-pages), déployé sur GitHub Pages.
+Site vitrine du programme immobilier **Horizon 1** (Tamesna) du promoteur
+**Hyperion Patrimoine**. Construit avec **React + Vite**, déployé sur GitHub Pages.
+Design d'origine : maquette `index 2.html` (landing bleu/or, Playfair Display + Jost).
 
 ## Pages
 
 | Page | URL | Composant |
 |---|---|---|
-| Accueil | `index.html` | `src/views/Home.jsx` |
-| Nos expertises | `services.html` | `src/views/Services.jsx` |
-| Le cabinet | `a-propos.html` | `src/views/About.jsx` |
-| Contact (formulaire + FAQ) | `contact.html` | `src/views/Contact.jsx` |
-| Mentions légales | `mentions-legales.html` | `src/views/Legal.jsx` |
+| Accueil (landing Horizon 1) | `index.html` | `src/views/Home.jsx` |
+| Espace SAV client | `sav.html` | `src/views/Sav.jsx` |
 | 404 | `404.html` | `src/views/NotFound.jsx` |
 
-Le header, le footer et les comportements communs (menu mobile, révélation au
-défilement, compteurs animés) sont dans `src/components/Layout.jsx`.
+Topbar, navigation sticky et footer sont dans `src/components/Layout.jsx`.
 
 ## Développement local
 
@@ -43,14 +40,23 @@ git push   # c'est tout — le site est en ligne quelques minutes plus tard
 
 Site en ligne : https://aymanlaassel.github.io/hyperionpatrimoine/
 
-## À personnaliser avant mise en production
+## Visuels à déposer dans `public/assets/`
 
-- [ ] Coordonnées réelles (email, téléphone, adresse) — `src/components/Layout.jsx`,
-      `src/views/Contact.jsx`, `src/views/Legal.jsx`
-- [ ] Champs `[entre crochets]` de `src/views/Legal.jsx` (RCS, ORIAS, assureur…)
-- [ ] Chiffres clés de la page d'accueil (`src/views/Home.jsx`)
-- [ ] Témoignages clients (actuellement fictifs, à remplacer par de vrais avis)
-- [ ] Formulaire de contact : actuellement en `mailto:`. Pour un envoi serveur,
-      brancher [Formspree](https://formspree.io) ou équivalent dans le
-      gestionnaire `handleSubmit` de `src/views/Contact.jsx`.
+Tant qu'un fichier manque, le site affiche un habillage de remplacement élégant.
+Dès que vous déposez le fichier, il apparaît automatiquement :
+
+- `logo.png` — logo Hyperion Patrimoine (header + footer)
+- `render1.jpg` — visuel principal (hero)
+- `render2.jpg` — visuel du programme (section Horizon 1 + galerie)
+- `render3.jpg`, `render4.jpg` — galerie
+- `plan.png` — plan d'étage (section Prix)
+
+## À compléter avant mise en production
+
+- [ ] Numéro de téléphone réel (actuellement `+212 ___ ___ ___`) — dans
+      `src/components/Layout.jsx` (topbar), `src/views/Home.jsx` et `src/views/Sav.jsx`
+- [ ] Visuels du programme (voir ci-dessus)
+- [ ] Formulaires : actuellement en `mailto:`. Pour un envoi serveur,
+      brancher [Formspree](https://formspree.io) ou équivalent dans les
+      gestionnaires `handleSubmit`.
 - [ ] Domaine personnalisé éventuel (Settings → Pages → Custom domain)

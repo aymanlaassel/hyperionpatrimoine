@@ -1,10 +1,10 @@
 import { createRoot } from "react-dom/client";
 import "../styles.css";
 import Layout from "../components/Layout";
-import Services from "../views/Services";
+import Sav from "../views/Sav";
 
 createRoot(document.getElementById("root")).render(
-  <Layout current="services.html">
-    <Services />
+  <Layout isHome={false}>
+    <Sav />
   </Layout>
 );

@@ -13,10 +13,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         index: page("index.html"),
-        services: page("services.html"),
-        apropos: page("a-propos.html"),
-        contact: page("contact.html"),
-        legal: page("mentions-legales.html"),
+        sav: page("sav.html"),
         notfound: page("404.html"),
       },
     },

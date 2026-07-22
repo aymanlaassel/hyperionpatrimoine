@@ -1,58 +1,92 @@
 import { useEffect, useState } from "react";
 
-const NAV_LINKS = [
-  { href: "index.html", label: "Accueil" },
-  { href: "services.html", label: "Nos expertises" },
-  { href: "a-propos.html", label: "Le cabinet" },
-  { href: "contact.html", label: "Contact" },
-];
+const ASSETS = import.meta.env.BASE_URL + "assets/";
 
-export function Brand() {
+// Vrai logo si assets/logo.png existe, sinon monogramme dans le style du site.
+export function Logo({ compact = false }) {
+  const [hasLogo, setHasLogo] = useState(true);
   return (
-    <a className="brand" href="index.html">
-      <span className="brand__mark">H</span>
-      <span className="brand__name">
-        Hyperion <span>Patrimoine</span>
-      </span>
-    </a>
+    <>
+      {hasLogo ? (
+        <img src={`${ASSETS}logo.png`} alt="Hyperion Patrimoine" onError={() => setHasLogo(false)} />
+      ) : (
+        <span className="mark" aria-hidden="true">H</span>
+      )}
+      {compact ? (
+        <span className="nm">Hyperion Patrimoine</span>
+      ) : (
+        <span className="nm">
+          Hyperion<small>Patrimoine</small>
+        </span>
+      )}
+    </>
   );
 }
 
-export function Header({ current }) {
+export function Topbar() {
+  return (
+    <div className="topbar">
+      <div className="wrap">
+        <span className="tag">L'immobilier qui valorise votre patrimoine</span>
+        <span className="right">
+          <span className="or">✆</span> <a href="tel:+212000000000">+212 ___ ___ ___</a>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+const NAV_LINKS = [
+  { anchor: "#programme", label: "Le programme" },
+  { anchor: "#projet", label: "Horizon 1" },
+  { anchor: "#atouts", label: "Atouts" },
+  { anchor: "#prix", label: "Prix" },
+  { anchor: "#galerie", label: "Galerie" },
+];
+
+export function Nav({ isHome = true }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const href = (anchor) => (isHome ? anchor : `index.html${anchor}`);
+  const close = () => setOpen(false);
 
   return (
-    <header className="header">
-      <div className="container nav">
-        <Brand />
-        <button
-          className={`nav__toggle${open ? " is-open" : ""}`}
-          aria-label="Ouvrir le menu"
-          aria-expanded={open}
-          onClick={() => setOpen(!open)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <ul className={`nav__links${open ? " is-open" : ""}`}>
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className={link.href === current ? "is-active" : undefined}
-                onClick={() => setOpen(false)}
-              >
-                {link.label}
+    <header className={scrolled ? "scrolled" : undefined}>
+      <div className="wrap">
+        <nav id="nav" className={open ? "open" : undefined}>
+          <a className="logo" href={isHome ? "#" : "index.html"}>
+            <Logo />
+          </a>
+          <ul>
+            {NAV_LINKS.map((link) => (
+              <li key={link.anchor}>
+                <a href={href(link.anchor)} onClick={close}>{link.label}</a>
+              </li>
+            ))}
+            <li><a href="sav.html" onClick={close}>SAV</a></li>
+            <li>
+              <a href={href("#contact")} className="disp" style={{ color: "var(--or-d)" }} onClick={close}>
+                Réserver
               </a>
             </li>
-          ))}
-          <li>
-            <a className="btn btn--gold nav__cta" href="contact.html" onClick={() => setOpen(false)}>
-              Prendre rendez-vous
-            </a>
-          </li>
-        </ul>
+          </ul>
+          <button
+            className="burger"
+            aria-label="Ouvrir le menu"
+            aria-expanded={open}
+            onClick={() => setOpen(!open)}
+          >
+            &#9776;
+          </button>
+        </nav>
       </div>
     </header>
   );
@@ -60,136 +94,60 @@ export function Header({ current }) {
 
 export function Footer() {
   return (
-    <footer className="footer">
-      <div className="container">
-        <div className="footer__grid">
-          <div className="footer__about">
-            <Brand />
-            <p>
-              Cabinet indépendant de conseil en gestion de patrimoine. Nous aidons nos clients à
-              construire, protéger et transmettre leur patrimoine.
-            </p>
+    <footer>
+      <div className="wrap">
+        <div className="top">
+          <div className="logo">
+            <Logo compact />
           </div>
           <div>
-            <h4>Navigation</h4>
-            <ul>
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  <a href={link.href}>{link.label}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h4>Expertises</h4>
-            <ul>
-              <li><a href="services.html#bilan">Bilan patrimonial</a></li>
-              <li><a href="services.html#immobilier">Immobilier</a></li>
-              <li><a href="services.html#retraite">Retraite</a></li>
-              <li><a href="services.html#transmission">Transmission</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4>Contact</h4>
-            <ul>
-              <li><a href="mailto:contact@hyperionpatrimoine.fr">contact@hyperionpatrimoine.fr</a></li>
-              <li><a href="tel:+33100000000">+33 (0)1 00 00 00 00</a></li>
-              <li>Sur rendez-vous, du lundi au vendredi</li>
-            </ul>
+            <a href="sav.html" style={{ color: "var(--or)", letterSpacing: "1.5px", textTransform: "uppercase", fontSize: ".78rem" }}>
+              Espace SAV client
+            </a>
           </div>
         </div>
-        <p className="footer__disclaimer">
-          Les informations présentées sur ce site ont un caractère purement informatif et ne
-          constituent ni un conseil en investissement, ni une offre de souscription. Tout
-          investissement comporte des risques, notamment de perte en capital. Les performances
-          passées ne préjugent pas des performances futures.
-        </p>
-        <div className="footer__bottom">
-          <span>© {new Date().getFullYear()} Hyperion Patrimoine. Tous droits réservés.</span>
-          <a href="mentions-legales.html">Mentions légales &amp; confidentialité</a>
+        <div className="bottom">
+          <span>© {new Date().getFullYear()} Hyperion Patrimoine — Tous droits réservés.</span>
+          <span>
+            <a href="mailto:hyperionpatrimoine@gmail.com">hyperionpatrimoine@gmail.com</a> · RC 188747 · ICE 003751804000041
+          </span>
         </div>
       </div>
     </footer>
   );
 }
 
-export function LegalFooter() {
-  return (
-    <footer className="footer">
-      <div className="container">
-        <div className="footer__bottom" style={{ borderTop: "none", paddingTop: 0 }}>
-          <span>© {new Date().getFullYear()} Hyperion Patrimoine. Tous droits réservés.</span>
-          <a href="index.html">Retour à l'accueil</a>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
-// Révélation au défilement + compteurs animés (comportements d'origine).
-function usePageEffects() {
+// Révélation au défilement (comportement du design d'origine).
+function useReveal() {
   useEffect(() => {
-    const cleanups = [];
-
-    const revealables = document.querySelectorAll(".reveal");
-    if ("IntersectionObserver" in window && revealables.length) {
-      const io = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("is-visible");
-              io.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.12 }
-      );
-      revealables.forEach((el) => io.observe(el));
-      cleanups.push(() => io.disconnect());
-    } else {
-      revealables.forEach((el) => el.classList.add("is-visible"));
+    const els = document.querySelectorAll(".reveal");
+    if (!("IntersectionObserver" in window) || !els.length) {
+      els.forEach((el) => el.classList.add("in"));
+      return;
     }
-
-    const counters = document.querySelectorAll("[data-count]");
-    if ("IntersectionObserver" in window && counters.length) {
-      const io = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            const el = entry.target;
-            const target = parseInt(el.dataset.count, 10);
-            const suffix = el.dataset.suffix || "";
-            const duration = 1400;
-            const start = performance.now();
-
-            const tick = (now) => {
-              const p = Math.min((now - start) / duration, 1);
-              const eased = 1 - Math.pow(1 - p, 3);
-              el.textContent = Math.round(target * eased) + suffix;
-              if (p < 1) requestAnimationFrame(tick);
-            };
-            requestAnimationFrame(tick);
-            io.unobserve(el);
-          });
-        },
-        { threshold: 0.5 }
-      );
-      counters.forEach((el) => io.observe(el));
-      cleanups.push(() => io.disconnect());
-    }
-
-    return () => cleanups.forEach((fn) => fn());
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("in");
+          io.unobserve(e.target);
+        }
+      }),
+      { threshold: 0.12 }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
   }, []);
 }
 
-export default function Layout({ current, footer = "full", children }) {
-  usePageEffects();
+export default function Layout({ isHome = true, children }) {
+  useReveal();
 
   return (
     <>
-      <Header current={current} />
+      <Topbar />
+      <Nav isHome={isHome} />
       <main>{children}</main>
-      {footer === "legal" ? <LegalFooter /> : <Footer />}
+      <Footer />
     </>
   );
 }
