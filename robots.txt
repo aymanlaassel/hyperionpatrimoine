@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aymanlaassel.github.io/hyperionpatrimoine/sitemap.xml
